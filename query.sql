@@ -33,3 +33,11 @@ CREATE TABLE recruiters (
     recruiters_desc VARCHAR(64) NULL,
     linkedin VARCHAR(64) NULL
 )
+
+CREATE TABLE portofolio (
+  portofolio_id SERIAL PRIMARY KEY,
+  app_name VARCHAR(255) NOT NULL,
+  repository TEXT NOT NULL,
+  app_type VARCHAR(64) NOT NULL,
+  image TEXT NOT NULL
+)
