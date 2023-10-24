@@ -84,8 +84,8 @@ const portofolioController = {
       const data = {
         portofolio_id,
         app_name: req.body.app_name || oldData.app_name,
-        repository: oldData.repository || oldData.repository,
-        app_type: oldData.app_type || oldData.app_type,
+        repository: req.body.repository || oldData.repository,
+        app_type: req.body.app_type || oldData.app_type,
         image: image.url,
       };
       console.log(data);
