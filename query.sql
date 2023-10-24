@@ -53,7 +53,11 @@ CREATE TABLE experience (
   workers_id INT NOT NULL
 )
 
-
+CREATE TABLE skill (
+  skill_id SERIAL PRIMARY KEY,
+  skill_name VARCHAR(64) NOT NULL,
+  workers_id INT NOT NULL
+)
 
 DROP TABLE portofolio
 
