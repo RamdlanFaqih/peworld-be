@@ -7,7 +7,6 @@ const {
     destroy,
     getByPortofolio_ID
 } = require("../controller/portofolio.controller")
-const auth = require("../middleware/staticAuth");
 const upload = require("../middleware/upload");
 
 router
