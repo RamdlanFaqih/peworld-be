@@ -39,5 +39,19 @@ CREATE TABLE portofolio (
   app_name VARCHAR(255) NOT NULL,
   repository TEXT NOT NULL,
   app_type VARCHAR(64) NOT NULL,
-  image TEXT NOT NULL
+  image TEXT NOT NULL,
+  workers_id INT NOT NULL
 )
+
+CREATE TABLE experience (
+  experience_id SERIAL PRIMARY KEY,
+  job_position VARCHAR(64) NOT NULL,
+  company_name VARCHAR(64) NOT NULL,
+  duration_employment VARCHAR(64) NOT NULL,
+  experience_desc VARCHAR(64) NOT NULL,
+  logo_company TEXT NULL,
+)
+
+
+
+DROP TABLE portofolio

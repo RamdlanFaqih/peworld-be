@@ -49,11 +49,11 @@ const portofolioModel = {
       );
     });
   },
-  insertData: ({ app_name, repository, app_type, image }) => {
+  insertData: ({ app_name, repository, app_type, image, workers_id }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `INSERT INTO portofolio(app_name, repository, app_type, image) VALUES 
-          ('${app_name}', '${repository}', '${app_type}', '${image}')`,
+        `INSERT INTO portofolio(app_name, repository, app_type, image, workers_id) VALUES 
+          ('${app_name}', '${repository}', '${app_type}', '${image}', '${workers_id}' )`,
         (err, res) => {
           if (err) {
             reject(err);

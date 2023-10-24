@@ -33,14 +33,16 @@ const portofolioController = {
       const {
         app_name,
         repository,
-        app_type
+        app_type,
+        workers_id
       } = req.body;
       const image = await cloudinary.uploader.upload(req.file.path);
           const data = {
             app_name,
             repository,
             app_type,
-            image: image.url
+            image: image.url,
+            workers_id
           };
           console.log(data);
           portofolioModel
@@ -84,8 +86,7 @@ const portofolioController = {
         app_name: req.body.app_name || oldData.app_name,
         repository: oldData.repository || oldData.repository,
         app_type: oldData.app_type || oldData.app_type,
-        image: image.url
-
+        image: image.url,
       };
       console.log(data);
       await portofolioModel
