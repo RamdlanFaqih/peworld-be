@@ -47,11 +47,14 @@ CREATE TABLE experience (
   experience_id SERIAL PRIMARY KEY,
   job_position VARCHAR(64) NOT NULL,
   company_name VARCHAR(64) NOT NULL,
-  duration_employment VARCHAR(64) NOT NULL,
+  duration_employement TEXT NOT NULL,
   experience_desc VARCHAR(64) NOT NULL,
   logo_company TEXT NULL,
+  workers_id INT NOT NULL
 )
 
 
 
 DROP TABLE portofolio
+
+DROP TABLE experience
