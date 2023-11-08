@@ -86,6 +86,50 @@ const recruitersController = {
       });
     }
   },
+  register: async (req, res) => {
+    try {
+      const {
+        name,
+        email,
+        company,
+        job_position,
+        phone_number,
+        password,
+        role = 0,
+      } = req.body;
+      bcrypt.hash(password, 10, function (err, hash) {
+        if (err) {
+          res.json({ message: "error hash password" });
+        } else {
+          const data = {
+            name,
+            email,
+            company,
+            job_position,
+            phone_number,
+            password: hash,
+            role,
+          };
+          console.log(data);
+          recruitersModel
+            .registerData(data)
+            .then((result) => {
+              res.json({
+                data: result,
+                message: "Insert data berhasil",
+              });
+            })
+            .catch((err) => {
+              res.json({ message: err.message });
+            });
+        }
+      });
+    } catch (err) {
+      res.json({
+        message: err.message,
+      });
+    }
+  },
   login: (req, res) => {
     const { email, password } = req.body;
     recruitersModel.loginRecruiters(email).then((data) => {

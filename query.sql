@@ -59,6 +59,18 @@ CREATE TABLE skill (
   workers_id INT NOT NULL
 )
 
+CREATE TABLE hire (
+  hire_id SERIAL PRIMARY KEY,
+  purpose VARCHAR(64) NOT NULL,
+  email VARCHAR(64) NOT NULL,
+  phone_number VARCHAR(64) NOT NULL,
+  hire_desc TEXT NOT NULL,
+  workers_id INT NOT NULL,
+  recruiters_id INT NOT NULL
+)
+
 DROP TABLE portofolio
 
 DROP TABLE experience
+
+DROP TABLE hire

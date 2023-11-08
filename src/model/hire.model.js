@@ -1,20 +1,20 @@
 const db = require("../config/db");
 
-const skillModel = {
+const hireModel = {
   selectAll: (search, sort) => {
     let sortDirection = sort === "DESC" ? "DESC" : "ASC";
     return db.query(
       `
-                SELECT * FROM skill 
-                WHERE skill.skill_name LIKE $1
-                ORDER BY skill.skill_name ${sortDirection}
-                    `,
+            SELECT * FROM hire
+            WHERE hire.purpose LIKE $1
+            ORDER BY hire.purpose ${sortDirection}
+            `,
       [`%${search}%`]
     );
   },
   selectPaginate: () => {
     return new Promise((resolve, reject) => {
-      db.query("SELECT COUNT (*) AS total FROM skill", (err, res) => {
+      db.query("SELECT COUNT (*) AS total FROM hire", (err, res) => {
         if (err) {
           reject(err);
         }
@@ -25,7 +25,7 @@ const skillModel = {
   pagination: (limit, offset) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM skill LIMIT ${limit} OFFSET ${offset}`,
+        `SELECT * FROM hire LIMIT ${limit} OFFSET ${offset}`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -35,10 +35,10 @@ const skillModel = {
       );
     });
   },
-  selectBySkill_ID: (skill_id) => {
+  selectByHire_ID: (hire_id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM skill WHERE skill_id = ${skill_id}`,
+        `SELECT * FROM hire WHERE hire_id = ${hire_id}`,
         (err, result) => {
           if (err) {
             reject(err);
@@ -48,25 +48,18 @@ const skillModel = {
       );
     });
   },
-
-  selectSkillByWorkers_ID: (workers_id) => {
+  insertData: ({
+    purpose,
+    email,
+    phone_number,
+    hire_desc,
+    workers_id,
+    recruiters_id,
+  }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM skill WHERE workers_id = ${workers_id}`,
-        (err, result) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(result);
-        }
-      );
-    });
-  },
-  insertData: ({ skill_name, workers_id }) => {
-    return new Promise((resolve, reject) => {
-      db.query(
-        `INSERT INTO skill(skill_name, workers_id) VALUES 
-          ('${skill_name}', '${workers_id}' )`,
+        `INSERT INTO hire(purpose, email, phone_number, hire_desc, workers_id, recruiters_id) VALUES 
+          ('${purpose}', '${email}', '${phone_number}', '${hire_desc}', '${workers_id}', '${recruiters_id}' )`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -76,12 +69,21 @@ const skillModel = {
       );
     });
   },
-  updateData: ({ skill_id, skill_name }) => {
+  updateData: ({
+    hire_id,
+    purpose,
+    email,
+    phone_number,
+    hire_desc,
+  }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `UPDATE skill SET 
-        skill_name='${skill_name}'
-        WHERE skill_id=${skill_id}`,
+        `UPDATE hire SET 
+        purpose='${purpose}',
+        email='${email}',
+        phone_number='${phone_number}',
+        hire_desc='${hire_desc}'
+        WHERE hire_id='${hire_id}'`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -91,9 +93,9 @@ const skillModel = {
       );
     });
   },
-  destroyData: (skill_id) => {
+  destroyData: (hire_id) => {
     return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM skill WHERE skill_id=${skill_id}`, (err, res) => {
+      db.query(`DELETE FROM hire WHERE hire_id=${hire_id}`, (err, res) => {
         if (err) {
           reject(err);
         }
@@ -102,5 +104,4 @@ const skillModel = {
     });
   },
 };
-
-module.exports = skillModel;
+module.exports = hireModel;

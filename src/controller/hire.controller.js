@@ -1,10 +1,10 @@
-const skillModel = require("../model/skill.model");
+const hireModel = require("../model/hire.model");
 
-const skillController = {
+const hireController = {
   list: (req, res) => {
     let search = req.query.search || "";
     let sort = req.query.sort || "ASC";
-    skillModel
+    hireModel
       .selectAll(search, sort)
       .then((result) => {
         res.json({ message: result });
@@ -13,10 +13,10 @@ const skillController = {
         res.json({ message: err.message });
       });
   },
-  getBySkill_ID: (req, res) => {
-    const skill_id = req.params.skill_id;
-    skillModel
-      .selectBySkill_ID(skill_id)
+  getByHire_ID: (req, res) => {
+    const hire_id = req.params.hire_id;
+    hireModel
+      .selectByHire_ID(hire_id)
       .then((result) => {
         res.send({
           data: result,
@@ -26,30 +26,26 @@ const skillController = {
         res.json({ message: err.message });
       });
   },
-  getSkillByWorkers_ID: (req, res) => {
-    const workers_id = req.params.workers_id
-    skillModel.selectSkillByWorkers_ID(workers_id)
-    .then((result) => {
-      res.send({
-        data: result,
-      });
-    })
-    .catch((err) => {
-      res.json({ message: err.message })
-    })
-  },
   insert: async (req, res) => {
     try {
       const {
-        skill_name,
-        workers_id
+        purpose,
+        email,
+        phone_number,
+        hire_desc,
+        workers_id,
+        recruiters_id,
       } = req.body;
       const data = {
-        skill_name,
-        workers_id
+        purpose,
+        email,
+        phone_number,
+        hire_desc,
+        workers_id,
+        recruiters_id,
       };
       console.log(data);
-      skillModel
+      hireModel
         .insertData(data)
         .then((result) => {
           res.json({
@@ -68,10 +64,10 @@ const skillController = {
   },
   update: async (req, res) => {
     try {
-      const skill_id = req.params.skill_id;
+      const hire_id = req.params.hire_id;
 
-      const oldData = await skillModel.selectBySkill_ID(
-        skill_id
+      const oldData = await hireModel.selectByHire_ID(
+        hire_id
       );
       console.log(oldData.rowCount);
       if (!oldData.rowCount) {
@@ -79,11 +75,14 @@ const skillController = {
       }
 
       const data = {
-        skill_id,
-        skill_name: req.body.skill_name|| oldData.skill_name,
+        hire_id,
+        purpose: req.body.purpose|| oldData.purpose,
+        email: req.body.email|| oldData.email,
+        phone_number: req.body.phone_number|| oldData.phone_number,
+        hire_desc: req.body.hire_desc|| oldData.hire_desc
       };
       console.log(data);
-      await skillModel
+      await hireModel
         .updateData(data)
         .then((result) => {
           res.json({
@@ -103,9 +102,9 @@ const skillController = {
     }
   },
   destroy: (req, res) => {
-    const skill_id = req.params.skill_id;
-    skillModel
-      .destroyData(skill_id)
+    const hire_id = req.params.hire_id;
+    hireModel
+      .destroyData(hire_id)
       .then((result) => {
         res.json({
           Data: result,
@@ -120,4 +119,4 @@ const skillController = {
   },
 };
 
-module.exports = skillController;
+module.exports = hireController;

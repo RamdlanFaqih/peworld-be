@@ -31,6 +31,17 @@ const workersController = {
       });
   },
 
+  getWorkersWithSkill: async (req, res) => {
+    try {
+      const workers_id = req.params.workers_id;
+      const workersWithSkill = await workersModel.selectWorkersWithSkill(workers_id);
+      res.status(200).json(workersWithSkill);
+    }catch (error) {
+      console.log(error);
+      res.status(500).json({message: "interval server error"})
+    }
+  },
+
   insert: async (req, res) => {
     try {
       const {
@@ -73,6 +84,40 @@ const workersController = {
           console.log(data);
           workersModel
             .insertData(data)
+            .then((result) => {
+              res.json({
+                data: result,
+                message: "Insert data berhasil",
+              });
+            })
+            .catch((err) => {
+              res.json({ message: err.message });
+            });
+        }
+      });
+    } catch (err) {
+      res.json({
+        message: err.message,
+      });
+    }
+  },
+  register: async (req, res) => {
+    try {
+      const { name, email, phone_number, password, role = 1 } = req.body;
+      bcrypt.hash(password, 10, function (err, hash) {
+        if (err) {
+          res.json({ message: "error hash password" });
+        } else {
+          const data = {
+            name,
+            email,
+            phone_number,
+            password: hash,
+            role,
+          };
+          console.log(data);
+          workersModel
+            .registerData(data)
             .then((result) => {
               res.json({
                 data: result,
@@ -151,14 +196,14 @@ const workersController = {
         password: password,
         image: image.url,
         role: req.body.role || oldData.role,
-        profession : req.body.profession || oldData.profession,
+        profession: req.body.profession || oldData.profession,
         residence: req.body.residence || oldData.residence,
         workplace: req.body.workplace || oldData.workplace,
         work_category: req.body.work_category || oldData.work_category,
         workers_desc: req.body.workers_desc || oldData.workers_desc,
         github_url: req.body.github_url || oldData.github_url,
         instagram_url: req.body.instagram_url || oldData.instagram,
-        gitlab_url: req.body.gitlab_url || oldData.gitlab
+        gitlab_url: req.body.gitlab_url || oldData.gitlab,
       };
       console.log(data);
       await workersModel
@@ -181,21 +226,62 @@ const workersController = {
     }
   },
 
+  updateWorkersProfilePicture: async (req, res) => {
+    try {
+      const workers_id = req.params.workers_id;
+      const oldData = await workersModel.selectByWorkers_ID(workers_id);
+      console.log(oldData.rowCount);
+      if (!oldData.rowCount) {
+        return res.json({ message: "data not found" });
+      }
+
+      let image;
+      if (req.file) {
+        image = await cloudinary.uploader.upload(req.file.path);
+      } else {
+        image = oldData.image;
+      }
+
+      const data = {
+        workers_id,
+        image: image.url,
+      };
+      console.log(data);
+      await workersModel
+        .updateProfilePicture(data)
+        .then((result) => {
+          res.json({
+            data: result,
+            message: "data updated successfully",
+          });
+        })
+        .catch((err) => {
+          res.json({
+            message: err.message,
+          });
+        });
+    } catch (err) {
+      res.json({
+        message: err.message,
+      });
+    }
+  },
+  
   destroy: (req, res) => {
     const workers_id = req.params.workers_id;
     workersModel
-        .destroyData(workers_id)
-        .then((result) => {
-            res.json({
-                Data: result,
-                message: 'data deleted successfully',
-            });
-        })
-        .catch((err) => {
-            res.json({
-                message: err.message,
-            });
+      .destroyData(workers_id)
+      .then((result) => {
+        res.json({
+          Data: result,
+          message: "data deleted successfully",
         });
+      })
+      .catch((err) => {
+        res.json({
+          message: err.message,
+        });
+      });
   },
 };
 

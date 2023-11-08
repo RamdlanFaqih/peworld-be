@@ -4,6 +4,7 @@ const {
     list,
     insert,
     login,
+    register,
     update,
     destroy,
     getByRecruiters_ID
@@ -25,6 +26,8 @@ router
 //login
 .post("/recruiters/login", login)
 
+//register
+.post("/recruiters/register", register)
 // Update Data
 .put("/recruiters/update/:recruiters_id", upload, update)
 

@@ -49,7 +49,14 @@ const experienceModel = {
       );
     });
   },
-  insertData: ({ job_position, company_name, duration_employement, experience_desc, logo_company, workers_id }) => {
+  insertData: ({
+    job_position,
+    company_name,
+    duration_employement,
+    experience_desc,
+    logo_company,
+    workers_id,
+  }) => {
     return new Promise((resolve, reject) => {
       db.query(
         `INSERT INTO experience(job_position, company_name, duration_employement, experience_desc, logo_company, workers_id) VALUES 
@@ -62,9 +69,16 @@ const experienceModel = {
         }
       );
     });
-},
+  },
 
-  updateData: ({ experience_id, job_position, company_name, duration_employement, experience_desc, logo_company }) => {
+  updateData: ({
+    experience_id,
+    job_position,
+    company_name,
+    duration_employement,
+    experience_desc,
+    logo_company,
+  }) => {
     return new Promise((resolve, reject) => {
       db.query(
         `UPDATE experience SET 
@@ -85,14 +99,17 @@ const experienceModel = {
   },
   destroyData: (experience_id) => {
     return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM experience WHERE experience_id=${experience_id}`, (err, res) => {
-        if (err) {
-          reject(err);
+      db.query(
+        `DELETE FROM experience WHERE experience_id=${experience_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
         }
-        resolve(res);
-      });
+      );
     });
   },
 };
 
-module.exports = experienceModel
+module.exports = experienceModel;

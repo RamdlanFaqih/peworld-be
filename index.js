@@ -7,7 +7,9 @@ const recruitersRouter = require("./src/router/recruiters.router")
 const portofolioRouter = require("./src/router/portofolio.router")
 const experienceRouter = require("./src/router/experience.router")
 const skillRouter = require("./src/router/skill.router")
+const hireRouter = require("./src/router/hire.router")
 const port = 3006;
+
 
 app.use(cors());
 app.use(express.static("public"));
@@ -16,7 +18,8 @@ app.use(workersRouter);
 app.use(recruitersRouter);
 app.use(portofolioRouter);
 app.use(experienceRouter);
-app.use(skillRouter)
+app.use(skillRouter);
+app.use(hireRouter);
 
 app.listen(port, () => {
   console.log(`Peworld Backend listening on port ${port}`);

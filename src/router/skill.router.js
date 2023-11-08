@@ -5,7 +5,8 @@ const {
     insert,
     update,
     destroy,
-    getBySkill_ID
+    getBySkill_ID,
+    getSkillByWorkers_ID
 } = require("../controller/skill.controller")
 
 router
@@ -15,6 +16,9 @@ router
 
 // Select by id
 .get("/skill/:skill_id", getBySkill_ID)
+
+// Select by workers_id
+.get("/skill/workers/:workers_id", getSkillByWorkers_ID)
 
 // Post Data
 .post("/skill/insert", insert)

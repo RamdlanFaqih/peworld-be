@@ -40,12 +40,52 @@ const workersModel = {
 
   selectByWorkers_ID: (workers_id) => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM workers WHERE workers_id = ${workers_id}`, (err, result) => {
-        if (err) {
-          reject(err);
+      db.query(
+        `SELECT * FROM workers WHERE workers_id = ${workers_id}`,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(result);
         }
-        resolve(result);
-      });
+      );
+    });
+  },
+
+  selectWorkersWithSkill: (workers_id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT 
+        workers.workers_id, 
+        workers.name AS workers_name, 
+        workers.email AS workers_email, 
+        workers.phone_number AS workers_phone_number, 
+        workers.role AS workers_role,
+        workers.image AS workers_image, 
+        workers.profession AS workers_profession, 
+        workers.residence AS workers_residence, 
+        workers.workplace AS workers_workplace, 
+        workers.workers_desc AS workers_workers_desc, 
+        workers.work_category AS workers_work_category, 
+        workers.github_url AS workers_github_url, 
+        workers.instagram_url AS workers_instagram_url, 
+        workers.gitlab_url AS workers_gitlab_url, 
+        skill.skill_id, 
+        skill.skill_name AS skill_skill_name 
+      FROM 
+        workers 
+      LEFT JOIN 
+        skill ON workers.workers_id = skill.workers_id 
+      WHERE 
+        workers.workers_id = ${workers_id}
+      `,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(result);
+        }
+      );
     });
   },
 
@@ -63,7 +103,7 @@ const workersModel = {
     work_category,
     github_url,
     instagram_url,
-    gitlab_url
+    gitlab_url,
   }) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -79,10 +119,11 @@ const workersModel = {
     });
   },
 
-  loginWorkers: (email) => {
+  registerWorkers: ({ name, email, phone_number, password, role }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM workers WHERE email = '${email}'`,
+        `INSERT INTO workers(name, email, phone_number, password) VALUES 
+          ('${name}', '${email}', '${phone_number}', '${password}', ${role})`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -92,14 +133,19 @@ const workersModel = {
       );
     });
   },
-  
-  registerData: ({
-    name,
-    email,
-    phone_number,
-    password,
-    role
-  }) => {
+
+  loginWorkers: (email) => {
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT * FROM workers WHERE email = '${email}'`, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
+  },
+
+  registerData: ({ name, email, phone_number, password, role }) => {
     return new Promise((resolve, reject) => {
       db.query(
         `INSERT INTO workers(name, email, phone_number, password, role) VALUES
@@ -129,7 +175,7 @@ const workersModel = {
     work_category,
     github_url,
     instagram_url,
-    gitlab_url
+    gitlab_url,
   }) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -144,18 +190,33 @@ const workersModel = {
     });
   },
 
-  destroyData: (workers_id) => {
+  updateProfilePicture: ({ workers_id, image }) => {
     return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM workers WHERE workers_id=${workers_id}`, (err, res) => {
-        if (err) {
-          reject(err);
+      db.query(
+        `UPDATE workers SET image='${image}' WHERE workers_id=${workers_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
         }
-        resolve(res);
-      });
+      );
     });
   },
 
-
+  destroyData: (workers_id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `DELETE FROM workers WHERE workers_id=${workers_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
 };
 
 module.exports = workersModel;
