@@ -35,7 +35,7 @@ const portofolioModel = {
       );
     });
   },
-  
+
   selectByPortofolio_ID: (portofolio_id) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -49,6 +49,20 @@ const portofolioModel = {
       );
     });
   },
+selectPortofolioByWorkers_ID: (workers_id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM portofolio WHERE workers_id = ${workers_id}`,
+      (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result);
+      }
+    )
+  })
+},
+
   insertData: ({ app_name, repository, app_type, image, workers_id }) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -83,12 +97,15 @@ const portofolioModel = {
   },
   destroyData: (portofolio_id) => {
     return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM portofolio WHERE portofolio_id=${portofolio_id}`, (err, res) => {
-        if (err) {
-          reject(err);
+      db.query(
+        `DELETE FROM portofolio WHERE portofolio_id=${portofolio_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
         }
-        resolve(res);
-      });
+      );
     });
   },
 };

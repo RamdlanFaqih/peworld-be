@@ -31,7 +31,7 @@ const skillController = {
     skillModel.selectSkillByWorkers_ID(workers_id)
     .then((result) => {
       res.send({
-        data: result,
+        data: result.rows,
       });
     })
     .catch((err) => {
@@ -40,9 +40,9 @@ const skillController = {
   },
   insert: async (req, res) => {
     try {
+      const {workers_id} = req.params
       const {
         skill_name,
-        workers_id
       } = req.body;
       const data = {
         skill_name,

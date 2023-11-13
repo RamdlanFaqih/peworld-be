@@ -219,6 +219,91 @@ const recruitersController = {
       });
     }
   },
+  updateRecruitersBiodata: async (req, res) => {
+    try {
+      const recruiters_id = req.params.recruiters_id;
+
+      const oldData = await recruitersModel.selectByRecruiters_ID(
+        recruiters_id
+      );
+      console.log(oldData.rowCount);
+      if (!oldData.rowCount) {
+        return res.json({ message: "data not found" });
+      }
+
+      const data = {
+        recruiters_id,
+        name: req.body.name || oldData.name,
+        email: req.body.email || oldData.email,
+        company: req.body.company || oldData.company,
+        job_position: req.body.job_position || oldData.job_position,
+        phone_number: req.body.phone_number || oldData.phone_number,
+        field: req.body.field || oldData.field,
+        city: req.body.city || oldData.city,
+        recruiters_desc: req.body.recruiters_desc || oldData.recruiters_desc,
+        linkedin: req.body.linkedin || oldData.linkedin,
+      };
+      console.log(data);
+      await recruitersModel
+        .updateBioata(data)
+        .then((result) => {
+          res.json({
+            data: result,
+            message: "data updated successfully",
+          });
+        })
+        .catch((err) => {
+          res.json({
+            message: err.message,
+          });
+        });
+    } catch (err) {
+      res.json({
+        message: err.message,
+      });
+    }
+  },
+  updateProfileRecruiters: async (req, res) => {
+    try {
+      const recruiters_id = req.params.recruiters_id;
+
+      const oldData = await recruitersModel.selectByRecruiters_ID(
+        recruiters_id
+      );
+      console.log(oldData.rowCount);
+      if (!oldData.rowCount) {
+        return res.json({ message: "data not found" });
+      }
+
+      const data = {
+        recruiters_id,
+        company: req.body.company || oldData.company,
+        phone_number: req.body.phone_number || oldData.phone_number,
+        field: req.body.field || oldData.field,
+        city: req.body.city || oldData.city,
+        recruiters_desc: req.body.recruiters_desc || oldData.recruiters_desc,
+        linkedin: req.body.linkedin || oldData.linkedin,
+      };
+      console.log(data);
+      await recruitersModel
+        .updateProfile(data)
+        .then((result) => {
+          res.json({
+            data: result,
+            message: "data updated successfully",
+          });
+        })
+        .catch((err) => {
+          res.json({
+            message: err.message,
+          });
+        });
+    } catch (err) {
+      res.json({
+        message: err.message,
+      });
+    }
+  },
   destroy: (req, res) => {
     const recruiters_id = req.params.recruiters_id;
     recruitersModel

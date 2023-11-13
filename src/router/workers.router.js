@@ -6,10 +6,12 @@ const {
     login,
     update,
     updateWorkersProfilePicture,
+    updateWorkersBiodata,
     destroy,
     register,
     getByWorkers_ID,
-    getWorkersWithSkill
+    getWorkersWithSkill,
+    workersPagination
 } = require("../controller/workers.controller")
 const auth = require("../middleware/staticAuth");
 const upload = require("../middleware/upload");
@@ -19,10 +21,11 @@ router
 // Select All
 .get("/workers", list)
 
+
 // Select by id
 .get("/workers/:workers_id", getByWorkers_ID)
 
-// Select workers with recipes
+// Select workers with skill
 .get("/workers/skill/:workers_id", getWorkersWithSkill)
 
 // Post Data
@@ -37,6 +40,9 @@ router
 
 //Update Data Profile Picture
 .put("/update/workers/workers_profile_picture/:workers_id", upload, updateWorkersProfilePicture)
+
+//Update Workers Biodata
+.put("/update/workers/biodata/:workers_id", updateWorkersBiodata)
 
 .delete("/deleteWorkers/:workers_id", destroy)
 

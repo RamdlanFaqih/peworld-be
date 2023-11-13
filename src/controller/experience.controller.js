@@ -27,14 +27,28 @@ const experienceController = {
         res.json({ message: err.message });
       });
   },
+
+  getExperienceByWorkers_ID: (req, res) => {
+    const workers_id = req.params.workers_id;
+    experienceModel
+      .selectExperienceByWorkers_ID(workers_id)
+      .then((result) => {
+        res.send({
+          data: result,
+        });
+      })
+      .catch((err) => {
+        res.json({ message: err.message });
+      });
+  },
   insert: async (req, res) => {
     try {
+      const { workers_id } = req.params;
       const {
         job_position,
         company_name,
         duration_employement,
         experience_desc,
-        workers_id
       } = req.body;
       const logo_company = await cloudinary.uploader.upload(req.file.path);
       const data = {
@@ -43,7 +57,7 @@ const experienceController = {
         duration_employement,
         experience_desc,
         logo_company: logo_company.url,
-        workers_id
+        workers_id,
       };
       console.log(data);
       experienceModel
@@ -63,6 +77,42 @@ const experienceController = {
       });
     }
   },
+
+  insertDataExperience: async (req, res) => {
+    try {
+      const { workers_id } = req.params;
+      const {
+        job_position,
+        company_name,
+        duration_employement,
+        experience_desc,
+      } = req.body;
+      const data = {
+        job_position,
+        company_name,
+        duration_employement,
+        experience_desc,
+        workers_id,
+      };
+      console.log(data);
+      experienceModel
+        .insertExperience(data)
+        .then((result) => {
+          res.json({
+            data: result,
+            message: "Insert data berhasil",
+          });
+        })
+        .catch((err) => {
+          res.json({ message: err.message });
+        });
+    } catch (err) {
+      res.json({
+        message: err.message,
+      });
+    }
+  },
+
   update: async (req, res) => {
     try {
       const experience_id = req.params.experience_id;
@@ -84,9 +134,10 @@ const experienceController = {
 
       const data = {
         experience_id,
-        job_position: req.body.job_position|| oldData.job_position,
+        job_position: req.body.job_position || oldData.job_position,
         company_name: req.body.company_name || oldData.company_name,
-        duration_employement: req.body.duration_employement || oldData.duration_employement,
+        duration_employement:
+          req.body.duration_employement || oldData.duration_employement,
         experience_desc: req.body.experience_desc || oldData.experience_desc,
         logo_company: logo_company.url,
       };

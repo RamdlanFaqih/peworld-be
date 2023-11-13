@@ -177,6 +177,7 @@ const workersController = {
       let image;
       if (req.file) {
         image = await cloudinary.uploader.upload(req.file.path);
+      
       } else {
         image = oldData.image;
       }
@@ -226,6 +227,44 @@ const workersController = {
     }
   },
 
+  updateWorkersBiodata: async (req, res) => {
+    try {
+      const workers_id = req.params.workers_id;
+      const oldData = await workersModel.selectByWorkers_ID(workers_id);
+      console.log(oldData.rowCount);
+      if (!oldData.rowCount) {
+        return res.json({ message: "data not found" });
+      }
+
+      const data = {
+        workers_id,
+        name: req.body.name || oldData.name,
+        profession: req.body.profession || oldData.profession,
+        residence: req.body.residence || oldData.residence,
+        workplace: req.body.workplace || oldData.workplace,
+        workers_desc: req.body.workers_desc || oldData.workers_desc,
+      };
+      console.log(data);
+      await workersModel
+        .updateBiodata(data)
+        .then((result) => {
+          res.json({
+            data: result,
+            message: "biodata updated successfully"
+          })
+        })
+        .catch((err) => {
+          res.json({
+            message: err.message
+          })
+        })
+    } catch (err) {
+      res.json({
+        message: err.message
+      })
+    }
+  },
+
   updateWorkersProfilePicture: async (req, res) => {
     try {
       const workers_id = req.params.workers_id;
@@ -238,6 +277,7 @@ const workersController = {
       let image;
       if (req.file) {
         image = await cloudinary.uploader.upload(req.file.path);
+        console.log(image);
       } else {
         image = oldData.image;
       }

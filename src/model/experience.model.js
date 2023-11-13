@@ -49,6 +49,20 @@ const experienceModel = {
       );
     });
   },
+
+  selectExperienceByWorkers_ID: (workers_id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM experience WHERE workers_id = ${workers_id}`,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(result)
+        }
+      )
+    })
+  },
   insertData: ({
     job_position,
     company_name,
@@ -70,7 +84,26 @@ const experienceModel = {
       );
     });
   },
-
+  insertExperience: ({
+    job_position,
+    company_name,
+    duration_employement,
+    experience_desc,
+    workers_id
+  }) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `INSERT INTO experience(job_position, company_name, duration_employement, experience_desc, workers_id) VALUES 
+          ('${job_position}', '${company_name}', '${duration_employement}', '${experience_desc}', '${workers_id}' )`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
   updateData: ({
     experience_id,
     job_position,

@@ -154,6 +154,70 @@ const recruitersModel = {
     });
   },
 
+  updateBioata: ({
+    recruiters_id,
+    name,
+    email,
+    company,
+    job_position,
+    phone_number,
+    field,
+    city,
+    recruiters_desc,
+    linkedin,
+  }) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE recruiters SET 
+        name='${name}', 
+        email='${email}', 
+        company='${company}', 
+        job_position='${job_position}', 
+        phone_number='${phone_number}', 
+        field='${field}', 
+        city='${city}', 
+        recruiters_desc='${recruiters_desc}', 
+        linkedin='${linkedin}' 
+        WHERE recruiters_id=${recruiters_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
+
+  updateProfile: ({
+    recruiters_id,
+    company,
+    phone_number,
+    field,
+    city,
+    recruiters_desc,
+    linkedin,
+  }) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE recruiters SET 
+        company='${company}', 
+        phone_number='${phone_number}', 
+        field='${field}', 
+        city='${city}', 
+        recruiters_desc='${recruiters_desc}', 
+        linkedin='${linkedin}' 
+        WHERE recruiters_id=${recruiters_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
+
   destroyData: (recruiters_id) => {
     return new Promise((resolve, reject) => {
       db.query(

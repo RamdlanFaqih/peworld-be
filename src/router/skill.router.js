@@ -21,7 +21,7 @@ router
 .get("/skill/workers/:workers_id", getSkillByWorkers_ID)
 
 // Post Data
-.post("/skill/insert", insert)
+.post("/skill/insert/:workers_id", insert)
 
 // Update Data
 .put("/skill/update/:skill_id", update)

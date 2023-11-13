@@ -5,7 +5,9 @@ const {
     insert,
     update,
     destroy,
-    getByExperience_ID
+    getByExperience_ID,
+    getExperienceByWorkers_ID,
+    insertDataExperience
 } = require("../controller/experience.controller")
 const upload = require("../middleware/upload");
 
@@ -17,9 +19,14 @@ router
 // Select by id
 .get("/experience/:experience_id", getByExperience_ID)
 
-// Post Data
-.post("/experience/insert", upload, insert)
+// Select by workers_id
+.get("/experience/workers/:workers_id", getExperienceByWorkers_ID)
 
+// Post Data
+.post("/experience/insert/:workers_id", upload, insert)
+
+// Post Data without Logo Company
+.post("/experience/insert/data/:workers_id", insertDataExperience)
 // Update Data
 .put("/experience/update/:experience_id", upload, update)
 

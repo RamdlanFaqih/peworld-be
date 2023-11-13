@@ -52,7 +52,7 @@ const skillModel = {
   selectSkillByWorkers_ID: (workers_id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM skill WHERE workers_id = ${workers_id}`,
+        `SELECT * FROM skill LEFT JOIN workers ON skill.workers_id = workers.workers_id  WHERE skill.workers_id = ${workers_id}`,
         (err, result) => {
           if (err) {
             reject(err);

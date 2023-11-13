@@ -5,7 +5,8 @@ const {
     insert,
     update,
     destroy,
-    getByPortofolio_ID
+    getByPortofolio_ID,
+    getPortofolioByWorkers_ID
 } = require("../controller/portofolio.controller")
 const upload = require("../middleware/upload");
 
@@ -17,8 +18,11 @@ router
 // Select by id
 .get("/portofolio/:portofolio_id", getByPortofolio_ID)
 
+// Select by workers id
+.get("/portofolio/workers/:workers_id", getPortofolioByWorkers_ID)
+
 // Post Data
-.post("/portofolio/insert", upload, insert)
+.post("/portofolio/insert/:workers_id", upload, insert)
 
 // Update Data
 .put("/portofolio/update/:portofolio_id", upload, update)

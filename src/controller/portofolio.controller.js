@@ -28,13 +28,27 @@ const portofolioController = {
       });
   },
 
+  getPortofolioByWorkers_ID: (req, res) => {
+    const workers_id = req.params.workers_id;
+    portofolioModel
+      .selectPortofolioByWorkers_ID(workers_id)
+      .then((result) => {
+        res.send({
+          data: result,
+        });
+      })
+      .catch((err) => {
+        res.json({ message: err.message})
+      })
+  },
+
   insert: async (req, res) => {
     try {
+      const {workers_id} = req.params
       const {
         app_name,
         repository,
         app_type,
-        workers_id
       } = req.body;
       const image = await cloudinary.uploader.upload(req.file.path);
           const data = {

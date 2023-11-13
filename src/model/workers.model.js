@@ -3,19 +3,29 @@ const db = require("../config/db");
 const workersModel = {
   selectAll: (search, sort) => {
     let sortDirection = sort === "DESC" ? "DESC" : "ASC";
-    return db.query(
-      `
-            SELECT * FROM workers 
-            WHERE workers.name LIKE $1
-            ORDER BY workers.name ${sortDirection}
-        `,
-      [`%${search}%`]
-    );
+    let cleanSearch = search.replace(/[^a-zA-Z0-9 ]/g, " ");
+    let searchTerm = `%${cleanSearch}%`;
+
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        SELECT * FROM workers 
+        WHERE LOWER(workers.name) ILIKE '${searchTerm}'
+        ORDER BY workers.name ${sortDirection}
+      `,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
   },
 
   selectPaginate: () => {
     return new Promise((resolve, reject) => {
-      db.query("SELECT COUNT (*) AS total FROM workers", (err, res) => {
+      db.query("SELECT COUNT(*) AS total FROM workers", (err, res) => {
         if (err) {
           reject(err);
         }
@@ -23,6 +33,7 @@ const workersModel = {
       });
     });
   },
+
 
   pagination: (limit, offset) => {
     return new Promise((resolve, reject) => {
@@ -70,7 +81,7 @@ const workersModel = {
         workers.github_url AS workers_github_url, 
         workers.instagram_url AS workers_instagram_url, 
         workers.gitlab_url AS workers_gitlab_url, 
-        skill.skill_id, 
+        skill.workers_id, 
         skill.skill_name AS skill_skill_name 
       FROM 
         workers 
@@ -180,6 +191,27 @@ const workersModel = {
     return new Promise((resolve, reject) => {
       db.query(
         `UPDATE workers SET name='${name}', email='${email}', phone_number='${phone_number}', password='${password}', role=${role}, image='${image}', profession='${profession}', residence='${residence}', workplace='${workplace}', workers_desc='${workers_desc}', work_category='${work_category}', github_url='${github_url}', instagram_url='${instagram_url}', gitlab_url='${gitlab_url}' WHERE workers_id=${workers_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
+
+  updateBiodata: ({
+    workers_id,
+    name,
+    profession,
+    residence,
+    workplace,
+    workers_desc,
+  }) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE workers SET name='${name}', profession='${profession}', residence='${residence}', workplace='${workplace}', workers_desc='${workers_desc}' WHERE workers_id=${workers_id}`,
         (err, res) => {
           if (err) {
             reject(err);
