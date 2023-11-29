@@ -32,7 +32,7 @@ CREATE TABLE recruiters (
     city VARCHAR(64) NULL,
     recruiters_desc VARCHAR(64) NULL,
     linkedin VARCHAR(64) NULL
-)
+);
 
 CREATE TABLE portofolio (
   portofolio_id SERIAL PRIMARY KEY,
@@ -41,23 +41,23 @@ CREATE TABLE portofolio (
   app_type VARCHAR(64) NOT NULL,
   image TEXT NOT NULL,
   workers_id INT NOT NULL
-)
+);
 
 CREATE TABLE experience (
   experience_id SERIAL PRIMARY KEY,
   job_position VARCHAR(64) NOT NULL,
   company_name VARCHAR(64) NOT NULL,
   duration_employement TEXT NOT NULL,
-  experience_desc VARCHAR(64) NOT NULL,
+  experience_desc TEXT NOT NULL,
   logo_company TEXT NULL,
   workers_id INT NOT NULL
-)
+);
 
 CREATE TABLE skill (
   skill_id SERIAL PRIMARY KEY,
   skill_name VARCHAR(64) NOT NULL,
   workers_id INT NOT NULL
-)
+);
 
 CREATE TABLE hire (
   hire_id SERIAL PRIMARY KEY,
@@ -67,7 +67,7 @@ CREATE TABLE hire (
   hire_desc TEXT NOT NULL,
   workers_id INT NOT NULL,
   recruiters_id INT NOT NULL
-)
+);
 
 DROP TABLE portofolio
 

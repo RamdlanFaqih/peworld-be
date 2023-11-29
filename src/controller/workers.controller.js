@@ -268,6 +268,7 @@ const workersController = {
         profession: req.body.profession || oldData.profession,
         residence: req.body.residence || oldData.residence,
         workplace: req.body.workplace || oldData.workplace,
+        work_category: req.body.work_category || oldData.work_category,
         workers_desc: req.body.workers_desc || oldData.workers_desc,
       };
       console.log(data);

@@ -208,11 +208,13 @@ const workersModel = {
     profession,
     residence,
     workplace,
+    work_category,
     workers_desc,
   }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `UPDATE workers SET name='${name}', profession='${profession}', residence='${residence}', workplace='${workplace}', workers_desc='${workers_desc}' WHERE workers_id=${workers_id}`,
+        `UPDATE workers SET name='${name}', profession='${profession}', residence='${residence}', workplace='${workplace}', work_category='${work_category}', workers_desc='${workers_desc}' WHERE workers_id=${workers_id}
+        `,
         (err, res) => {
           if (err) {
             reject(err);
