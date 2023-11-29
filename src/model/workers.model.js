@@ -1,9 +1,9 @@
 const db = require("../config/db");
 
 const workersModel = {
-  selectAll: (search, sort) => {
+  selectAll: (search, sort, limit, offset) => {
     let sortDirection = sort === "DESC" ? "DESC" : "ASC";
-    let cleanSearch = search.replace(/[^a-zA-Z0-9 ]/g, " ");
+    let cleanSearch = search.replace(/[^a-zA-Z0-9 ]/g, " ").trim();
     let searchTerm = `%${cleanSearch}%`;
 
     return new Promise((resolve, reject) => {
@@ -12,6 +12,7 @@ const workersModel = {
         SELECT * FROM workers 
         WHERE LOWER(workers.name) ILIKE '${searchTerm}'
         ORDER BY workers.name ${sortDirection}
+        LIMIT ${limit} OFFSET ${offset}
       `,
         (err, res) => {
           if (err) {

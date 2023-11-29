@@ -7,15 +7,40 @@ const workersController = {
   list: (req, res) => {
     let search = req.query.search || "";
     let sort = req.query.sort || "ASC";
+  
+    const { limit, page } = req.query;
+    const pageValue = page ? Number(page) : 1;
+    const limitValue = limit ? Number(limit) : 3;
+    const offsetValue = pageValue === 1 ? 0 : (pageValue - 1) * limitValue;
+  
     workersModel
-      .selectAll(search, sort)
-      .then((result) => {
-        res.json({ message: result });
+      .selectPaginate()
+      .then((allData) => {
+        const totalData = Number(allData.rows[0].total);
+  
+        workersModel
+          .selectAll(search, sort, limitValue, offsetValue)
+          .then((result) => {
+            const selectAll = {
+              currentPage: pageValue,
+              dataPerPage: limitValue,
+              totalPage: Math.ceil(totalData / limitValue),
+              totalData,
+              result,
+            };
+            console.log(allData);
+            console.log(limitValue);
+            res.json({ message: "OK", result: selectAll });
+          })
+          .catch((err) => {
+            res.json({ message: err.message });
+          });
       })
       .catch((err) => {
         res.json({ message: err.message });
       });
   },
+  
 
   getByWorkers_ID: (req, res) => {
     const workers_id = req.params.workers_id;
@@ -34,11 +59,13 @@ const workersController = {
   getWorkersWithSkill: async (req, res) => {
     try {
       const workers_id = req.params.workers_id;
-      const workersWithSkill = await workersModel.selectWorkersWithSkill(workers_id);
+      const workersWithSkill = await workersModel.selectWorkersWithSkill(
+        workers_id
+      );
       res.status(200).json(workersWithSkill);
-    }catch (error) {
+    } catch (error) {
       console.log(error);
-      res.status(500).json({message: "interval server error"})
+      res.status(500).json({ message: "interval server error" });
     }
   },
 
@@ -177,7 +204,6 @@ const workersController = {
       let image;
       if (req.file) {
         image = await cloudinary.uploader.upload(req.file.path);
-      
       } else {
         image = oldData.image;
       }
@@ -250,18 +276,18 @@ const workersController = {
         .then((result) => {
           res.json({
             data: result,
-            message: "biodata updated successfully"
-          })
+            message: "biodata updated successfully",
+          });
         })
         .catch((err) => {
           res.json({
-            message: err.message
-          })
-        })
+            message: err.message,
+          });
+        });
     } catch (err) {
       res.json({
-        message: err.message
-      })
+        message: err.message,
+      });
     }
   },
 
@@ -306,7 +332,7 @@ const workersController = {
       });
     }
   },
-  
+
   destroy: (req, res) => {
     const workers_id = req.params.workers_id;
     workersModel

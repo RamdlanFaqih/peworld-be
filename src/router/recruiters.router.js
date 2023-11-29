@@ -9,7 +9,8 @@ const {
     destroy,
     getByRecruiters_ID,
     updateRecruitersBiodata,
-    updateProfileRecruiters
+    updateProfileRecruiters,
+    updateRecruitersProfilePicture
 } = require("../controller/recruiters.controller")
 const auth = require("../middleware/staticAuth");
 const upload = require("../middleware/upload");
@@ -34,6 +35,7 @@ router
 .put("/recruiters/update/:recruiters_id", upload, update)
 .patch("/recruiters/update/biodata/:recruiters_id", updateRecruitersBiodata)
 .patch("/recruiters/update/profile/:recruiters_id", updateProfileRecruiters)
+.patch("/recruiters/update/image_profile/:recruiters_id", upload, updateRecruitersProfilePicture)
 
 .delete("/recruiters/delete/:recruiters_id", destroy)
 

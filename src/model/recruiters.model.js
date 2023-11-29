@@ -218,6 +218,20 @@ const recruitersModel = {
     });
   },
 
+  updateProfilePicture: ({ recruiters_id, image }) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE recruiters SET image='${image}' WHERE recruiters_id=${recruiters_id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
+
   destroyData: (recruiters_id) => {
     return new Promise((resolve, reject) => {
       db.query(

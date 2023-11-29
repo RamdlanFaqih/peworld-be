@@ -304,6 +304,48 @@ const recruitersController = {
       });
     }
   },
+
+  updateRecruitersProfilePicture: async (req, res) => {
+    try {
+      const recruiters_id = req.params.recruiters_id;
+      const oldData = await recruitersModel.selectByRecruiters_ID(recruiters_id);
+      console.log(oldData.rowCount);
+      if (!oldData.rowCount) {
+        return res.json({ message: "data not found" });
+      }
+
+      let image;
+      if (req.file) {
+        image = await cloudinary.uploader.upload(req.file.path);
+        console.log(image);
+      } else {
+        image = oldData.image;
+      }
+
+      const data = {
+        recruiters_id,
+        image: image.url,
+      };
+      console.log(data);
+      await recruitersModel
+        .updateProfilePicture(data)
+        .then((result) => {
+          res.json({
+            data: result,
+            message: "data updated successfully",
+          });
+        })
+        .catch((err) => {
+          res.json({
+            message: err.message,
+          });
+        });
+    } catch (err) {
+      res.json({
+        message: err.message,
+      });
+    }
+  },
   destroy: (req, res) => {
     const recruiters_id = req.params.recruiters_id;
     recruitersModel
