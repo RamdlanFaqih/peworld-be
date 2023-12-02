@@ -35,6 +35,26 @@ const hireModel = {
       );
     });
   },
+
+  selectHireByUsers_ID: (workers_id, sort) => {
+    return new Promise((resolve, reject) => {
+      let sortDirection = sort === "DESC" ? "DESC" : "ASC";
+      db.query(
+        `SELECT * FROM hire 
+        LEFT JOIN recruiters ON hire.recruiters_id = recruiters.recruiters_id
+        WHERE hire.workers_id = ${workers_id}
+        ORDER BY created_at ${sortDirection}`,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(result);
+        }
+      );
+    });
+  },
+  
+
   selectByHire_ID: (hire_id) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -59,7 +79,7 @@ const hireModel = {
     return new Promise((resolve, reject) => {
       db.query(
         `INSERT INTO hire(purpose, email, phone_number, hire_desc, workers_id, recruiters_id) VALUES 
-          ('${purpose}', '${email}', '${phone_number}', '${hire_desc}', '${workers_id}', '${recruiters_id}' )`,
+          ('${purpose}', '${email}', '${phone_number}', '${hire_desc}', ${workers_id}, ${recruiters_id} )`,
         (err, res) => {
           if (err) {
             reject(err);

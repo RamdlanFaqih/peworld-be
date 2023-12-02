@@ -69,6 +69,9 @@ CREATE TABLE hire (
   recruiters_id INT NOT NULL
 );
 
+ALTER TABLE hire
+ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
 DROP TABLE portofolio
 
 DROP TABLE experience

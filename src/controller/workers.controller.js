@@ -165,7 +165,7 @@ const workersController = {
   login: (req, res) => {
     const { email, password } = req.body;
     workersModel.loginWorkers(email).then((data) => {
-      const workersId = data.rows[0].workers_id;
+      const workers_id = data.rows[0].workers_id;
       const workersRole = data.rows[0].role;
       const workersPassword = data.rows[0].password;
       if (data.rowCount > 0) {
@@ -178,8 +178,8 @@ const workersController = {
             res.json({
               message: "LOGIN BERHASIL",
               generateToken: token,
-              workersId: workersId,
-              workersLevel: workersRole,
+              workers_id: workers_id,
+              role: workersRole,
             });
           } else {
             res.json({

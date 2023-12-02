@@ -146,8 +146,8 @@ const recruitersController = {
             res.json({
               message: "LOGIN BERHASIL",
               generateToken: token,
-              recruitersId: recruitersId,
-              recruitersLevel: recruitersRole,
+              recruiters_id: recruitersId,
+              role: recruitersRole,
             });
           } else {
             res.json({

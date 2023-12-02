@@ -26,23 +26,34 @@ const hireController = {
         res.json({ message: err.message });
       });
   },
+
+  getByWorkers_ID: (req, res) => {
+    let sort = req.query.sort || "DESC";
+
+    const workers_id = req.params.workers_id;
+    hireModel
+      .selectHireByUsers_ID(workers_id, sort)
+      .then((result) => {
+        res.send({
+          data: result,
+        });
+      })
+      .catch((err) => {
+        res.json({message: err.message});
+      })
+  },
+
   insert: async (req, res) => {
     try {
-      const {
-        purpose,
-        email,
-        phone_number,
-        hire_desc,
-        workers_id,
-        recruiters_id,
-      } = req.body;
+      const { recruiters_id } = req.params;
+      const { purpose, email, phone_number, hire_desc, workers_id } = req.body;
       const data = {
         purpose,
         email,
         phone_number,
         hire_desc,
         workers_id,
-        recruiters_id,
+        recruiters_id
       };
       console.log(data);
       hireModel
@@ -66,9 +77,7 @@ const hireController = {
     try {
       const hire_id = req.params.hire_id;
 
-      const oldData = await hireModel.selectByHire_ID(
-        hire_id
-      );
+      const oldData = await hireModel.selectByHire_ID(hire_id);
       console.log(oldData.rowCount);
       if (!oldData.rowCount) {
         return res.json({ message: "data not found" });
@@ -76,10 +85,10 @@ const hireController = {
 
       const data = {
         hire_id,
-        purpose: req.body.purpose|| oldData.purpose,
-        email: req.body.email|| oldData.email,
-        phone_number: req.body.phone_number|| oldData.phone_number,
-        hire_desc: req.body.hire_desc|| oldData.hire_desc
+        purpose: req.body.purpose || oldData.purpose,
+        email: req.body.email || oldData.email,
+        phone_number: req.body.phone_number || oldData.phone_number,
+        hire_desc: req.body.hire_desc || oldData.hire_desc,
       };
       console.log(data);
       await hireModel
