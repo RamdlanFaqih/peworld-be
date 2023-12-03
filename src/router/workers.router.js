@@ -11,9 +11,7 @@ const {
     register,
     getByWorkers_ID,
     getWorkersWithSkill,
-    workersPagination
 } = require("../controller/workers.controller")
-const auth = require("../middleware/staticAuth");
 const upload = require("../middleware/upload");
 
 router

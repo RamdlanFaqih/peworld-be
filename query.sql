@@ -66,7 +66,8 @@ CREATE TABLE hire (
   phone_number VARCHAR(64) NOT NULL,
   hire_desc TEXT NOT NULL,
   workers_id INT NOT NULL,
-  recruiters_id INT NOT NULL
+  recruiters_id INT NOT NULL,
+  reated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE hire
